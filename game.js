@@ -1,20 +1,14 @@
-const readline = require('readline');
-
-const reader = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
 class Game {
   constructor (stacks) {
     this.stacks = stacks;
   }
 
-  run (completionCallback) {
-    this.promptMove(completionCallback);
+  run (completionCallback, reader) {
+    this.print();
+    this.promptMove(completionCallback, reader);
   }
 
-  promptMove (completionCallback) {
+  promptMove (completionCallback, reader) {
     const that = this;
 
     reader.question("Move disc from: ", function (ans) {
@@ -25,13 +19,11 @@ class Game {
         if (!that.move(start, end)) {
           console.log("Invalid move...");
         }
-        that.print();
-
+        
         if (!that.isWon()) {
-          that.run(completionCallback);
+          that.run(completionCallback, reader);
         } else {
           console.log("You won!");
-          reader.close();
           completionCallback();
         }
       });
@@ -66,4 +58,4 @@ class Game {
   }
 
 }
-module.exports = Game; 
+module.exports = Game;
