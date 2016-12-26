@@ -1,7 +1,5 @@
 const Game = require("./game.js");
-const Board = require("./board.js");
 const readline = require('readline');
-
 
 const reader = readline.createInterface({
   input: process.stdin,
@@ -11,9 +9,8 @@ const reader = readline.createInterface({
 function completionCallback () {
   reader.question(" Do you want to play again? ", function (ans) {
     if (ans === 'yes'){
-      const newboard = new Board();
-      const newGame = new Game(board);
-      newGame.play(completionCallback, reader);
+      let newGame = new Game();
+      newGame.play(reader, completionCallback);
     } else {
       console.log("Goodbye");
       reader.close();
@@ -21,6 +18,5 @@ function completionCallback () {
   });
 }
 
-const board = new Board();
-const game = new Game(board);
-game.play(completionCallback, reader);
+let game = new Game();
+game.play(reader, completionCallback);

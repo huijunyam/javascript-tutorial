@@ -1,11 +1,11 @@
 class Board {
   constructor () {
-    this.grid = [new Array(3), new Array(3), new Array(3)];
-    // this.grid = [[1,1,1], [1,1,1] , [1,1,1]];
+    this.grid = Board.makeGrid();
+    // this.grid = [[null, null, 1], [1,1,1] , [1,1,null]];
   }
 
   isEmpty (pos) {
-    if (this.grid[pos[0]][pos[1]] === undefined) {
+    if (this.grid[pos[0]][pos[1]] === null) {
       return true;
     } else return false;
   }
@@ -18,9 +18,9 @@ class Board {
   }
 
   isWon () {
-    return (this.checkHorizontal(this.grid)
-      || this.checkVertical()
-      || this.checkDiagonal());
+    return (this.checkHorizontal(this.grid) !== ""
+      || this.checkVertical() !== ""
+      || this.checkDiagonal() !== "");
   }
 
   winner () {
@@ -31,12 +31,12 @@ class Board {
     for(let i = 0; i < grid.length; i++) {
       const mark = grid[i][0];
       if (
-        grid[i].every(pos => pos === mark && mark !== undefined)
+        grid[i].every(pos => pos === mark && mark !== null)
       ){
         return mark;
       }
     }
-    return false;
+    return "";
   }
 
   checkVertical () {
@@ -53,11 +53,11 @@ class Board {
     const diag2 = Board._diag2();
     const mark1 = this.grid[0][0];
     const mark2 = this.grid[0][2];
-    if (diag1.every(pos => this.grid[pos[0]][pos[1]] === mark1 && mark1 !== undefined)) {
+    if (diag1.every(pos => this.grid[pos[0]][pos[1]] === mark1 && mark1 !== null)) {
       return mark1;
-    } else if (diag2.every(pos => this.grid[pos[0]][pos[1]] === mark2 && mark2 !== undefined)) {
+    } else if (diag2.every(pos => this.grid[pos[0]][pos[1]] === mark2 && mark2 !== null)) {
       return mark2;
-    } else return false;
+    } else return "";
   }
 
   isCatsGame () {
@@ -75,6 +75,19 @@ class Board {
     return [[0,2], [1,1], [2, 0]];
   }
 
+  static makeGrid() {
+    const grid = [];
+
+    for (let i = 0; i < 3; i++) {
+      grid.push([]);
+      for (let j = 0; j < 3; j++) {
+        grid[i].push(null);
+      }
+    }
+
+    return grid;
+  }
+
   print () {
     console.log(JSON.stringify(this.grid[0]));
     console.log(JSON.stringify(this.grid[1]));
@@ -82,8 +95,10 @@ class Board {
   }
 }
 
-const board = new Board();
-console.log(board.checkHorizontal(board.grid));
-
+// const board = new Board();
+// console.log(board.grid);
+// console.log(board.isEmpty([1,1]));
+// console.log(board.placeMark([1,1], "X"));
+// console.log(board.print());
 
 module.exports = Board;

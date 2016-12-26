@@ -98,11 +98,8 @@ function innerBubbleSortLoop(arr, i, madeAnySwaps, outerBubbleSortLoop) {
         arr[i + 1] = arr[i];
         arr[i] = temp;
         madeAnySwaps = true;
-        innerBubbleSortLoop(arr, i + 1, true, outerBubbleSortLoop);
-      } else {
-        madeAnySwaps = false;
-        innerBubbleSortLoop(arr, i + 1, false, outerBubbleSortLoop);
       }
+      innerBubbleSortLoop(arr, i + 1, madeAnySwaps, outerBubbleSortLoop);
     });
   }
 }
@@ -112,7 +109,7 @@ function absurdBubbleSort(arr, sortCompletionCallback) {
     // Begin an inner loop if you made any swaps. Otherwise, call
     // `sortCompletionCallback`.
     if (madeAnySwaps) {
-      innerBubbleSortLoop(arr, 0, true, outerBubbleSortLoop);
+      innerBubbleSortLoop(arr, 0, false, outerBubbleSortLoop);
     } else {
       sortCompletionCallback(arr);
     }

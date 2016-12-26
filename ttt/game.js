@@ -1,38 +1,39 @@
 const Board = require('./board.js');
-const readline = require('readline');
-
-const reader = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
 
 class Game {
-  constructor (board){
-    this.board = board;
+  constructor (){
+    this.board = new Board();
     this.player1 = "X";
     this.player2 = "O";
     this.currentPlayer = "X";
   }
 
-  play() {
-    if (this.board.isWon() || this.board.isCatsGame()) {
-      console.log("game over");
-      reader.close();
-      // completionCallback();
-    } else {
-      this.board.print();
-      this.promptMove();
-    }
+  play(reader, completionCallback) {
+    this.board.print();
+    this.promptMove(reader, completionCallback);
   }
 
-  promptMove () {
+  promptMove (reader,completionCallback) {
     const that = this;
-    reader.question(`${this.currentPlayer} give me a move(e.g; 1,1): `, function(pos) {
+    console.log(`${this.currentPlayer} turn`);
+    reader.question("give me a move(e.g; 1,1): ", function(pos){
       const parsed = that.parseMove(pos);
-      if (that.board.placeMark(parsed, that.currentPlayer)) {
-        that.currentPlayer = that.currentPlayer === "X" ? "O" : "X";
+      if (that.board.placeMark(parsed, that.currentPlayer)){
+        that.currentPlayer === "X" ? that.currentPlayer = "O" : that.currentPlayer = "X";
+      } else {
+        console.log("invalid position");
       }
-      that.play();
+      if (that.board.isWon()){
+        let winner = that.currentPlayer;
+        winner === "X" ? winner = "O" : winner = "X";
+        console.log(`${winner}, you won`);
+        completionCallback();
+      } else if (that.board.isCatsGame()){
+        console.log("It is tied");
+        completionCallback();
+      } else {
+        that.play(reader, completionCallback);
+      }
     });
   }
 
@@ -40,9 +41,5 @@ class Game {
     return pos.split(",").map(coord => parseInt(coord));
   }
 }
-
-const board = new Board();
-const game = new Game(board);
-game.play();
 
 module.exports = Game;
