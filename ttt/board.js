@@ -1,7 +1,6 @@
 class Board {
   constructor () {
     this.grid = Board.makeGrid();
-    // this.grid = [[null, null, 1], [1,1,1] , [1,1,null]];
   }
 
   isEmpty (pos) {
@@ -67,6 +66,12 @@ class Board {
     return flattenGrid.join("").length === 9;
   }
 
+  print () {
+    console.log(JSON.stringify(this.grid[0]));
+    console.log(JSON.stringify(this.grid[1]));
+    console.log(JSON.stringify(this.grid[2]));
+  }
+  
   static _diag1 () {
     return [[0,0], [1,1], [2,2]];
   }
@@ -87,18 +92,6 @@ class Board {
 
     return grid;
   }
-
-  print () {
-    console.log(JSON.stringify(this.grid[0]));
-    console.log(JSON.stringify(this.grid[1]));
-    console.log(JSON.stringify(this.grid[2]));
-  }
 }
-
-// const board = new Board();
-// console.log(board.grid);
-// console.log(board.isEmpty([1,1]));
-// console.log(board.placeMark([1,1], "X"));
-// console.log(board.print());
 
 module.exports = Board;
